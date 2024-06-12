@@ -1,0 +1,33 @@
+{
+  "name": "expensee_tracker_graphql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node backend/index.js",
+    "dev": "cross-env NODE_ENV=development nodemon backend/index.js",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.10.1",
+    "@graphql-tools/merge": "^9.0.3",
+    "bcryptjs": "^2.4.3",
+    "connect-mongodb-session": "^5.0.0",
+    "cron": "^3.1.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "express-session": "^1.18.0",
+    "graphql": "^16.8.1",
+    "graphql-passport": "^0.6.8",
+    "mongoose": "^8.2.2",
+    "nodemon": "^3.1.0",
+    "passport": "^0.7.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
+}
