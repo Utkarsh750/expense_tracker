@@ -1,23 +1,40 @@
-import cron from "cron";
-import https from "https";
+import cron from 'cron';
+import https from 'https';
 
-const URL = "https://expense-tracker-graphql.onrender.com/";
+const URL = 'https://expense-tracker-wzwc.onrender.com/';
+let interval = 15; // initial interval in minutes
+const maxInterval = 60; // maximum interval in minutes
 
-const job = new cron.CronJob("*/14 * * * *", function () {
-	https
-		.get(URL, (res) => {
-			if (res.statusCode === 200) {
-				console.log("GET request sent successfully");
-			} else {
-				console.log("GET request failed", res.statusCode);
-			}
-		})
-		.on("error", (e) => {
-			console.error("Error while sending request", e);
-		});
+const job = new cron.CronJob(`*/${interval} * * * *`, function() {
+  https.get(URL, (res) => {
+    if (res.statusCode === 200) {
+      console.log('GET request sent successfully');
+      if (interval < maxInterval) {
+        interval = Math.min(interval * 2, maxInterval); // exponential backoff
+        updateJob();
+      }
+    } else {
+      console.log('GET request failed', res.statusCode);
+      interval = 15; // reset interval on failure
+      updateJob();
+    }
+  }).on('error', (e) => {
+    console.error('Error while sending request', e);
+    interval = 15; // reset interval on error
+    updateJob();
+  });
 });
 
+const updateJob = () => {
+  job.stop();
+  job.setTime(new cron.CronTime(`*/${interval} * * * *`));
+  job.start();
+};
+
+job.start();
+
 export default job;
+
 
 // CRON JOB EXPLANATION:
 // Cron jobs are scheduled tasks that run periodically at fixed intervals or specific times
