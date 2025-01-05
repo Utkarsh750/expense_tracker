@@ -7,7 +7,7 @@ const maxInterval = 60; // maximum interval in minutes
 
 const job = new cron.CronJob(`*/${interval} * * * *`, function() {
   https.get(URL, (res) => {
-    if (res.statusCode === 200) {
+    if (res.statusCode === 200) {  
       console.log('GET request sent successfully');
       if (interval < maxInterval) {
         interval = Math.min(interval * 2, maxInterval); // exponential backoff
